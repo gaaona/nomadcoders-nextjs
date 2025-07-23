@@ -1,20 +1,18 @@
-"use client";
+export const metadata = {
+  title: "Home",
+};
 
-import { useEffect, useState } from "react";
+const URL = "https://nomad-movies.nomadcoders.workers.dev/movies";
 
-export default function Page() {
-  const [isLoading, setIsLoading] = useState(true); // 기본값이 true
-  const [movies, setMovies] = useState([]); // 기본값이 빈 배열
-  const getMovies = async () => {
-    const response = await fetch(
-      "https://nomad-movies.nomadcoders.workers.dev/movies"
-    );
-    const json = await response.json();
-    setMovies(json);
-    setIsLoading(false);
-  };
-  useEffect(() => {
-    getMovies();
-  }, []);
-  return <div>{isLoading ? "Loading..." : JSON.stringify(movies)}</div>;
+async function getMovies() {
+  const response = await fetch(URL);
+  const json = await response.json();
+  return json;
+  /* 위와 동일
+  fetch(URL).then((response) => response.json()); */
+}
+
+export default async function Page() {
+  const movies = await getMovies();
+  return <div>{JSON.stringify(movies)}</div>;
 }
