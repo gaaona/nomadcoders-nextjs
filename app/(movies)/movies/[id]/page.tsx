@@ -1,8 +1,21 @@
-export default function MovieDetail({
+import { get } from "http";
+import MovieVideos from "../../../../components/movie-videos";
+import MovieInfo from "../../../../components/movie-info";
+import { Suspense } from "react";
+
+export default async function MovieDetail({
   params: { id },
 }: {
   params: { id: string };
 }) {
-  // console.log(props); // 백엔드에서 실행됨(bash에 나오고 브라우저에 안 나옴)
-  return <h1>Movie {id}</h1>;
+  return (
+    <div>
+      <Suspense fallback={<h1>Loading movie info</h1>}>
+        <MovieInfo id={id} />
+      </Suspense>
+      <Suspense fallback={<h1>Loading movie videos</h1>}>
+        <MovieVideos id={id} />
+      </Suspense>
+    </div>
+  );
 }
